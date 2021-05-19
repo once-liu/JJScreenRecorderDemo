@@ -86,26 +86,39 @@ class ViewController: UIViewController, RPPreviewViewControllerDelegate {
             return
         }
         
-        recorder.stopRecording { previewViewController, error in
-            DispatchQueue.main.async {
-                self.stopTimer()
-                self.hideRecording()
-            }
+        if #available(iOS 14, *) {
+            let fileManager = FileManager.default
+            let fileName = ""
+            var filePath = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.cachesDirectory, FileManager.SearchPathDomainMask.userDomainMask, true).first
+            // TODO: swift 中拼接文件的表示
             
-            if error == nil {
+            
+            
+//            recorder.stopRecording(withOutput: URL.init(fileURLWithPath: filePath)) { error in
+//
+//            }
+        } else {
+            recorder.stopRecording { previewViewController, error in
+                DispatchQueue.main.async {
+                    self.stopTimer()
+                    self.hideRecording()
+                }
                 
-                 /**
-                 let URL: URL = previewViewController?.value(forKey: "movieURL") as! URL
-                 print("---> URL: \(URL)")
-                 */
-                
-                
-                 previewViewController?.previewControllerDelegate = self
-                 self.present(previewViewController!, animated: true, completion: nil)
-                 
-                
-            } else {
-                print("---> Stop Recorder Error: \(String(describing: error?.localizedDescription))")
+                if error == nil {
+                    
+                    /**
+                     let URL: URL = previewViewController?.value(forKey: "movieURL") as! URL
+                     print("---> URL: \(URL)")
+                     */
+                    
+                    
+                    previewViewController?.previewControllerDelegate = self
+                    self.present(previewViewController!, animated: true, completion: nil)
+                    
+                    
+                } else {
+                    print("---> Stop Recorder Error: \(String(describing: error?.localizedDescription))")
+                }
             }
         }
     }

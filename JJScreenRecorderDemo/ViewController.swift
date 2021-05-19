@@ -118,6 +118,7 @@ class ViewController: UIViewController, RPPreviewViewControllerDelegate {
     func previewController(_ previewController: RPPreviewViewController, didFinishWithActivityTypes activityTypes: Set<String>) {
         print("\(activityTypes)")
         
+        // Save action
         // ["com.apple.UIKit.activity.SaveToCameraRoll"]
     }
     
